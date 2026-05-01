@@ -1,19 +1,25 @@
-# skills
+# Vulpes and Branta Skills
 
-A Claude Code plugin marketplace for the Vulpes & Branta agent-skills workflow:
-spec out a feature, plan a backlog, build the tasks, and validate against the
-spec — each step as its own skill.
+
 
 ## Install
 
 In Claude Code:
 
+**Via SSH Auth**
 ```
-/plugin marketplace add vulpesandbranta/skills
-/plugin install vulpes-and-branta@skills
+/plugin marketplace add git@github.com:vulpes-and-branta/skills.git
 ```
 
-(Replace `vulpesandbranta/skills` with the actual git remote once published.)
+**Va HTTPS Auth**
+```
+/plugin marketplace add https://github.com/vulpes-and-branta/skills.git
+```
+
+To install all skills:
+```
+/plugin install vulpes-and-branta@skills
+```
 
 ## Skills
 
