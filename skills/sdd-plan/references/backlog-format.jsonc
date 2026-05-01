@@ -1,0 +1,63 @@
+{
+    "status": "todo | in progress | done",
+    "tasks": [
+        {
+            // Integer identifying the task. No two tasks should share an id. Simple ascending ids (0, 1, 2, etc.) are sufficient.
+            "id": 0,
+            // Short name describing the task to be done. This should be a concise, descriptive title that clearly 
+            // conveys the main objective of the task. The name should be specific enough to give a clear idea of 
+            // what the task involves, but concise enough to be easily readable and understandable at a glance.
+            // Max 7 words.
+            "name": "task name",
+            "status": "todo | in progress | done",
+            // Short business context specific to the task. This should be a brief description of the business 
+            // rationale for the task, including how it relates to the overall feature being implemented and 
+            // any relevant user needs or pain points that it addresses. The context should provide enough 
+            // information for a developer to understand why the task is important and how it fits into the 
+            // larger picture of the feature implementation.
+            "context": "Short businesss context specific to the task",
+            // Technical description of the task to be done. This should be a detailed description of the 
+            // technical work that needs to be done in order to complete the task, including any specific 
+            // implementation details, algorithms, data structures, or design patterns that should be used. 
+            // The description should provide enough information for a developer to understand exactly what
+            // needs to be done without needing to refer back to the original feature spec or any other documentation.
+            "description": "Technical description of the task to be done",
+            // The specific file paths in the codebase that are relevant to the implementation of the task. 
+            // These should be files that the agent will need to create or modify in order to complete the task, 
+            // These should be as specific as possible, ideally pointing to specific files rather than directories, 
+            // and including line numbers or code blocks where relevant.
+            // Max 5 file paths per task.
+            "locations": [
+                "path/to/file/creation/or/modification1",
+                "...",
+                "path/to/file/creation/or/modificationN"
+            ],
+            // Existing files that should be referenced by the agent as context to understand
+            // current codebase structure, conventions, and patterns. These files should be relevant to the task at hand,
+            // but should not be files that the agent is expected to modify in order to complete the task.
+            // Max 5 files.
+            "references": [
+                "path/to/reference/file1",
+                "...",
+                "path/to/reference/fileN"
+            ],
+            // A set of acceptance criteria that can be used to programmatically verify the successful completion of the task.
+            // Criteria should be prepended with one of "Inspection or UnitTest" to indicate the type of validation that can be performed.
+            // "Inspection: Criteria that can be verified through code inspection, such as adherence to coding standards, presence of comments, build success."
+            // "UnitTest: Criteria that can be verified through unit tests, such as specific function outputs given certain inputs."
+            "acceptanceCriteria": [
+                "Criteria1",
+                "...",
+                "CriteriaN"
+            ],
+            "dependencies": [
+                // Integer ids of other tasks that must be completed before this task can be started. This should be a list of task ids that represent the 
+                // dependencies for this task, indicating which tasks need to be completed before this task can be started. This helps to establish the order of 
+                // operations and ensures that tasks are completed in a logical sequence.
+                1,
+                "...",
+                9999
+             ]
+        }
+    ]
+}

@@ -1,0 +1,27 @@
+{
+  "name": "skills",
+  "owner": {
+    "name": "Vulpes & Branta",
+    "email": "hello@vulpesandbranta.com"
+  },
+  "metadata": {
+    "description": "Vulpes & Branta agent skills for spec-driven feature development",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "vulpes-and-branta",
+      "description": "End-to-end feature workflow: init the directory structure, write specs, plan a backlog, build tasks, and validate against the spec.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/vnb-init",
+        "./skills/sdd-spec",
+        "./skills/sdd-plan",
+        "./skills/sdd-build",
+        "./skills/sdd-build-task",
+        "./skills/sdd-validate"
+      ]
+    }
+  ]
+}
