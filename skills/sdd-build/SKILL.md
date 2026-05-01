@@ -24,32 +24,31 @@ You are an expert software engineering manager who specializes in organizing and
 
 If the feature's `spec.status` is `todo`, update the yaml frontmatter to set `status: in progress` before proceeding so any concurrent invocation can detect that work is underway. Do the same for the top-level `status` field of `{project_root}/.agents/features/{feature-short-name}/backlog.json`.
 
-All commands in this step are run from `{project_root}`.
+You orchestrate parallel subagents continuously — not in waves — until every task is done. All commands in this step are run from `{project_root}`.
 
-1. Identify the next eligible tasks to work on by running:
-    ```bash
-    python scripts/next_tasks.py {feature-short-name}
-    ```
-    The script outputs a single JSON line to stdout containing every `todo` task whose dependencies are all `done`. Choose one of the following based on the output:
-    - `{"next_tasks": [{"id": <int>, "name": "<task-name>"}, ...]}` with one or more entries: proceed to step 2 to dispatch subagents.
-    - `{"next_tasks": []}`: tasks remain but all of them are blocked by in-progress work. Wait for a dispatched subagent to finish, then repeat Step 2 - Build.
+1. Run `python scripts/next_tasks.py {feature-short-name}` to get eligible tasks. The script outputs a single JSON line:
+    - `{"next_tasks": [{"id": <int>, "name": "<task-name>"}, ...]}`: one or more tasks ready. Go to step 2.
+    - `{"next_tasks": []}`: tasks remain but all are blocked by in-progress work. Wait for a completion (the harness will wake you), then go to step 3.
     - `{"status": "all_done"}`: every task is `done`. Proceed to Step 3 - Validation.
-2. For each `{id, name}` entry returned by `next_tasks.py`, do the following before dispatching a subagent:
-    1. Mark the task as `in progress` in `backlog.json` (this is the parent's write; the subagent must NOT do it):
+2. For each eligible task you choose to admit:
+    1. Mark it `in progress`:
         ```bash
         python scripts/set_task_status.py {feature-short-name} {task-id} "in progress"
         ```
-    2. Dispatch the subagent. **The subagent's name MUST be set to the task's `name` field** (the `{task-name}` from the script output) so parallel dispatches are distinguishable in the run log. Use the following prompt:
+    2. Dispatch a subagent using the Task tool with **`run_in_background: true`**. The subagent's name MUST be the task's `name` field. Prompt:
         ```
         Use the sdd-build-task skill with feature-short-name "{feature-short-name}" and task-id {task-id}. Once the task is complete, report back with a summary of the work that was done to complete the task. You **MUST** follow the skill exactly without any deviations.
         ```
-3. When a dispatched subagent reports successful completion, perform the following actions for that task before continuing:
-    1. Mark the task as `done` in `backlog.json`:
+   The harness will wake you when any in-flight subagent completes — you do not poll, sleep, or wait synchronously.
+3. On each completion notification:
+    1. If the subagent reported **success**: mark the task `done`:
         ```bash
         python scripts/set_task_status.py {feature-short-name} {task-id} done
         ```
-    2. Stage and commit the resulting `backlog.json` change with a meaningful message such as `task {id} done: {name}`. The subagent has already committed its code, tests, and `progress.md` update, so this commit captures only the status flip.
-4. Once all in-flight subagents have been processed, repeat Step 2 - Build from step 1.
+    2. If the subagent reported **failure**: leave the task `in progress` and report the failure to the user. Do not flip to `done`.
+    3. Return to step 1 to dispatch any newly unblocked work. Do not wait for other in-flight subagents to drain first.
+
+**You set the in-flight count.** Default: admit every eligible task. Throttle only on concrete same-file write contention. `locations` is a hint — subagents touch files outside it. Throttle order: highest fan-out first, lowest id breaks ties.
 
 ## Step 3 - Validation
 1. Dispatch a subagent with the following prompt:
