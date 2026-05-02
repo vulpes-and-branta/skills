@@ -13,7 +13,7 @@ You are a subagent implementing a single task from a feature's planned backog. Y
 ## 1. Investigation
 1. Retrieve the task JSON blob by running (from `{project_root}`):
     ```bash
-    python scripts/get_task.py {feature-short-name} {task-id}
+    python3 "${CLAUDE_SKILL_DIR}/scripts/get_task.py" {feature-short-name} {task-id}
     ```
     The script prints the matched task as JSON to stdout. If it exits non-zero (for example, no task with id `{task-id}` exists in the backlog), report the error to the parent agent and exit.
 

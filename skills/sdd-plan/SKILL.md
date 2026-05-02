@@ -56,7 +56,7 @@ Alternatives Considered:
 5. Append the finalized tasks to `{project_root}/.agents/features/{feature-short-name}/backlog.json` as new JSON blobs in the backlog array.
 6. Validate the finalized backlog by running (from `{project_root}`):
     ```bash
-    python scripts/validate_backlog.py {feature-short-name}
+    python3 "${CLAUDE_SKILL_DIR}/scripts/validate_backlog.py" {feature-short-name}
     ```
     The validator checks JSON syntax, required task fields, name length (≤7 words), locations/references bounds (≤5 each, no overlap), acceptance-criteria prefixes (`Inspection:` / `UnitTest:`), allowed status values, unique integer `id`s, and well-formed `dependencies` arrays (integer ids referring to other tasks in the same backlog, no self-reference, no cycles). If the validator exits non-zero, fix the reported errors in the backlog and re-run until it exits 0. **Do NOT proceed to Step 3 while validation is failing.**
 

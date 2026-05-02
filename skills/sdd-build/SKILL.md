@@ -26,14 +26,14 @@ If the feature's `spec.status` is `todo`, update the yaml frontmatter to set `st
 
 You orchestrate parallel subagents continuously — not in waves — until every task is done. All commands in this step are run from `{project_root}`.
 
-1. Run `python scripts/next_tasks.py {feature-short-name}` to get eligible tasks. The script outputs a single JSON line:
+1. Run `python3 "${CLAUDE_SKILL_DIR}/scripts/next_tasks.py" {feature-short-name}` to get eligible tasks. The script outputs a single JSON line:
     - `{"next_tasks": [{"id": <int>, "name": "<task-name>"}, ...]}`: one or more tasks ready. Go to step 2.
     - `{"next_tasks": []}`: tasks remain but all are blocked by in-progress work. Wait for a completion (the harness will wake you), then go to step 3.
     - `{"status": "all_done"}`: every task is `done`. Proceed to Step 3 - Validation.
 2. For each eligible task you choose to admit:
     1. Mark it `in progress`:
         ```bash
-        python scripts/set_task_status.py {feature-short-name} {task-id} "in progress"
+        python3 "${CLAUDE_SKILL_DIR}/scripts/set_task_status.py" {feature-short-name} {task-id} "in progress"
         ```
     2. Dispatch a subagent using the Task tool with **`run_in_background: true`**. The subagent's name MUST be the task's `name` field. Prompt:
         ```
@@ -43,7 +43,7 @@ You orchestrate parallel subagents continuously — not in waves — until every
 3. On each completion notification:
     1. If the subagent reported **success**: mark the task `done`:
         ```bash
-        python scripts/set_task_status.py {feature-short-name} {task-id} done
+        python3 "${CLAUDE_SKILL_DIR}/scripts/set_task_status.py" {feature-short-name} {task-id} done
         ```
     2. If the subagent reported **failure**: leave the task `in progress` and report the failure to the user. Do not flip to `done`.
     3. Return to step 1 to dispatch any newly unblocked work. Do not wait for other in-flight subagents to drain first.
