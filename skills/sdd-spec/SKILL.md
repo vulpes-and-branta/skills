@@ -32,8 +32,9 @@ You will work with the user to create a comprehensive specification document for
    - Question your assumptions about the feature to identify gaps in your understanding
    - Challenge you to consider edge cases and scenarios you may not have thought of
    - Provide critical feedback on the completeness and clarity of your understanding of the feature
+   - Stay focused on the business logic and user experience of the feature, not technical implementation details
 
-Based on the outcome of the subagent's analysis, choose ONE of the following:
+5. Based on the outcome of the subagent's analysis, choose ONE of the following:
    - Gaps Identified: Repeat `Discovery` to gather more information and clarify your understanding of the feature.
    - No Gaps Identified: Display the full set of acceptance criteria as a bulleted list, then **EXPLICITLY** ask the user for approval to move on to `Spec Generation`. Do not proceed without confirmation.
 

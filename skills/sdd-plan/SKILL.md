@@ -42,18 +42,24 @@ Alternatives Considered:
 **Do NOT proceed to Step 3 until the user has accepted all proposed Achitecture Decisions.** If the user rejects any proposed ADR, you MUST revise the proposed ADRs until the user accepts them.
 
 3. Dtermine a set of individual, atomic tasks that fully and comprehensively describe the work necessary to implement the feature. **CRITICAL:**
-    * Tasks MUST EXACTLY follow the pattern of a `task` element from `backlog-format`'s `backlog.tasks` array.
-    * Tasks MUST be atomic, capable of being completed in isolation without any further context. 
-    * Generated tasks' acceptance criteria MUST collectively cover **ALL** acceptance criteria from the feature spec.
-    * Acceptance criteria MUST be reflected as unit tests where applicable. 
-    * Tasks MUST be generated in order of implementation. For example, if Task B cannot be started until Task A is completed, Task A should be listed before Task B in the generated list of tasks.
-    * Each task MUST include an integer `id` field. Ids MUST be unique across the backlog and SHOULD be assigned as simple ascending integers starting at 0 (or continuing from the highest existing id when appending to a non-empty backlog).
-    * Each task MUST include a `dependencies` array containing the integer `id`s of every other task in this backlog that must be completed before the task can begin. Use an empty array (`[]`) when there are no prerequisites. Dependency ids MUST refer to tasks that exist in the same backlog, MUST NOT include the task's own id, and MUST NOT form a cycle.
-4. Dispatch an adversarial subagent which abides by the Keep It Simple Stupid (KISS) principle. This agent **MUST:**
-    - Review the spec
+    - Tasks MUST EXACTLY follow the pattern of a `task` element from `backlog-format`'s `backlog.tasks` array.
+    - Tasks MUST be atomic, capable of being completed in isolation without any further context. 
+    - Generated tasks' acceptance criteria MUST collectively cover **ALL** acceptance criteria from the feature spec.
+    - Acceptance criteria MUST be reflected as unit tests where applicable. 
+    - Tasks MUST be generated in order of implementation. For example, if Task B cannot be started until Task A is completed, Task A should be listed before Task B in the generated list of tasks.
+    - Each task MUST include an integer `id` field. Ids MUST be unique across the backlog and SHOULD be assigned as simple ascending integers starting at 0 (or continuing from the highest existing id when appending to a non-empty backlog).
+    - Each task MUST include a `dependencies` array containing the integer `id`s of every other task in this backlog that must be completed before the task can begin. Use an empty array (`[]`) when there are no prerequisites. Dependency ids MUST refer to tasks that exist in the same backlog, MUST NOT include the task's own id, and MUST NOT form a cycle.
+
+4. Dispatch an adversarial subagent to review your task list. This agent **MUST:**
+
+    - Review the spec prior to reviewing the tasks to ensure understanding of the feature requirements and acceptance criteria.
+    - Ensure you are not over-simplifying **NOR** over-engineering the task list.
     - Identify any issues with the generated tasks such as lack of clarity, lack of atomicity, missing acceptance criteria, or any other issue that would prevent a task from being completed in isolation without further clarification. 
+    - Stay focused on the technical implementation details of the tasks, not the business logic or user experience of the feature.
+    
     If any issues are identified, revise the tasks and repeat this step until no issues are found by the adversarial subagent.
 5. Append the finalized tasks to `{project_root}/.agents/features/{feature-short-name}/backlog.json` as new JSON blobs in the backlog array.
+
 6. Validate the finalized backlog by running (from `{project_root}`):
     ```bash
     python3 "${CLAUDE_SKILL_DIR}/scripts/validate_backlog.py" {feature-short-name}
