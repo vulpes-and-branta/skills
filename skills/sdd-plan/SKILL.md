@@ -28,17 +28,17 @@ Once a valid `todo` feature is identified, perform the following steps in order.
     * What changes will have to be made to the database schema to implement the feature as described in the spec?
     * What changes will have to be made to the API surface to implement the feature as described in the spec?
     * What changes will have to be made to the frontend to implement the feature as described in the spec?
-2. Based on the outcome of the discovery process, determine the critical high level Architecture Decisions necessary to implement the feature and present them to the user for acceptance using a tool to ask yser questions. Example:
-```markdown
-Architecutre Decision {N}: {Decision Title}
+2. Based on the outcome of the discovery process, determine the critical high level Architecture Decisions necessary to implement the feature. Using a tool to ask questions, ask the user to review the proposed decisions. Example question format:
+        ```markdown
+        Architecutre Decision {N}: {Decision Title}
 
-Decision: What is the architectural decision?
+        Decision: What is the architectural decision?
 
-Rationale: Why is this the best decision given the circustances?
+        Rationale: Why is this the best decision given the circustances?
 
-Alternatives Considered:
-    * Alternative {N}: Why was this not chosen
-```
+        Alternatives Considered:
+            * Alternative {N}: Why was this not chosen
+        ```
 **Do NOT proceed to Step 3 until the user has accepted all proposed Achitecture Decisions.** If the user rejects any proposed ADR, you MUST revise the proposed ADRs until the user accepts them.
 
 3. Dtermine a set of individual, atomic tasks that fully and comprehensively describe the work necessary to implement the feature. **CRITICAL:**
@@ -56,8 +56,8 @@ Alternatives Considered:
     - Ensure you are not over-simplifying **NOR** over-engineering the task list.
     - Identify any issues with the generated tasks such as lack of clarity, lack of atomicity, missing acceptance criteria, or any other issue that would prevent a task from being completed in isolation without further clarification. 
     - Stay focused on the technical implementation details of the tasks, not the business logic or user experience of the feature.
-    
-    If any issues are identified, revise the tasks and repeat this step until no issues are found by the adversarial subagent.
+
+    When the agent finishes, assess the raised issues and determine if they are in line with the goal of wholly and completely delivering the feature. If necessary, revise the tasks and repeat this step until no issues are found by the adversarial subagent.
 5. Append the finalized tasks to `{project_root}/.agents/features/{feature-short-name}/backlog.json` as new JSON blobs in the backlog array.
 
 6. Validate the finalized backlog by running (from `{project_root}`):
