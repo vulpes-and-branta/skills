@@ -1,7 +1,7 @@
 """Load skill scripts by file path so they can be exercised as modules.
 
-The scripts under skills/*/scripts/ aren't on sys.path, so this helper uses
-importlib to load each script by absolute path.
+The scripts under plugins/*/skills/*/scripts/ aren't on sys.path, so this
+helper uses importlib to load each script by absolute path.
 """
 
 from __future__ import annotations
@@ -11,10 +11,11 @@ from pathlib import Path
 from types import ModuleType
 
 _REPO = Path(__file__).resolve().parent.parent
+_SDD = _REPO / "plugins/spec-driven-development/skills"
 _SCRIPTS = {
-    "next_tasks": _REPO / "skills/sdd-build/scripts/next_tasks.py",
-    "get_task": _REPO / "skills/sdd-build-task/scripts/get_task.py",
-    "validate_backlog": _REPO / "skills/sdd-plan/scripts/validate_backlog.py",
+    "next_tasks": _SDD / "sdd-build/scripts/next_tasks.py",
+    "get_task": _SDD / "sdd-build-task/scripts/get_task.py",
+    "validate_backlog": _SDD / "sdd-plan/scripts/validate_backlog.py",
 }
 
 

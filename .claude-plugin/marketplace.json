@@ -10,18 +10,16 @@
   },
   "plugins": [
     {
-      "name": "vulpes-and-branta",
-      "description": "End-to-end feature workflow: init the directory structure, write specs, plan a backlog, build tasks, and validate against the spec.",
-      "source": "./",
-      "strict": false,
-      "skills": [
-        "./skills/vnb-init",
-        "./skills/sdd-spec",
-        "./skills/sdd-plan",
-        "./skills/sdd-build",
-        "./skills/sdd-build-task",
-        "./skills/sdd-validate"
-      ]
+      "name": "initialize",
+      "displayName": "Initialize",
+      "source": "./plugins/initialize",
+      "description": "Initialize the .agents/features/ directory structure used by the spec-driven-development workflow"
+    },
+    {
+      "name": "spec-driven-development",
+      "displayName": "Spec-Driven Development",
+      "source": "./plugins/spec-driven-development",
+      "description": "Spec-driven feature workflow: write specs, plan a backlog, build tasks, and validate against the spec"
     }
   ]
 }

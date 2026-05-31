@@ -1,0 +1,9 @@
+{
+  "name": "initialize",
+  "version": "0.1.0",
+  "description": "Initialize the .agents/features/ directory structure used by the spec-driven-development workflow",
+  "author": {
+    "name": "Vulpes & Branta",
+    "email": "hello@vulpesandbranta.com"
+  }
+}

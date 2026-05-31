@@ -1,0 +1,9 @@
+{
+  "name": "spec-driven-development",
+  "version": "0.1.0",
+  "description": "Spec-driven feature workflow: write specs, plan a backlog, build tasks, and validate against the spec",
+  "author": {
+    "name": "Vulpes & Branta",
+    "email": "hello@vulpesandbranta.com"
+  }
+}

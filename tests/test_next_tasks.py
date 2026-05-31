@@ -9,7 +9,10 @@ from _loader import load
 
 next_tasks = load("next_tasks")
 
-SCRIPT_PATH = Path(__file__).resolve().parent.parent / "skills/sdd-build/scripts/next_tasks.py"
+SCRIPT_PATH = (
+    Path(__file__).resolve().parent.parent
+    / "plugins/spec-driven-development/skills/sdd-build/scripts/next_tasks.py"
+)
 
 
 class PickNextTasksTests(unittest.TestCase):
