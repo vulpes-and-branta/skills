@@ -9,12 +9,12 @@ You will work with the user to create a comprehensive specification document for
 **MANDATORY - READ ENTIRE FILE:** Read the [spec-format](./references/spec-format.md) document completely from start to finish. NEVER set any range limits when reading this file. `spec-format` will give inform you of the type of information you will be expected to gather and provide the exact format of the resulting document.
 
 # Steps
-**CRITICAL: PERFORM ONLY THE ACTIONS OUTLINED IN THE STEPS, DO NOT DEVIATE FROM THE STEPS OR PERFORM ADDITIONAL ACTIONS**
-
 ## Step 1 - Discovery:
+**CRITICAL: Each discovery step depends on the previous step, you cannot batch or skip steps. You must complete each step in order and only move to the next step once the current step is fully complete.**
+
 1. Gather detailed information about the feature from the user. Using a tool to ask questions, interact with the user to ensure you have a complete understanding of the feature's requirements, business logic, and intended user experience.
 
-2. Use subagents and tools to explore the codebase and gather context relevant to the user's feature description. The following questions should guide the investigation:
+2. After gathering the user's feature intent, use subagents and tools to explore the codebase and gather context relevant to the user's feature description. The following questions should guide the subagents' investigation:
 
    - What existing workflows and business logic will be affected by this request?
    - What possible edge cases exist and have not been addressed?
@@ -28,7 +28,8 @@ You will work with the user to create a comprehensive specification document for
    - Explain why additional information is relevant to ensure comprehensive coverage
    - Iterate until all aspects of the feature are understood
 
-4. When you believe you have enough information to document the feature, dispatch an adversarial subagent to double-check your work. The subagent should:
+4. After the user has answered all questions you have about the feature, dispatch an adversarial subagent to double-check your work. The subagent should:
+
    - Question your assumptions about the feature to identify gaps in your understanding
    - Challenge you to consider edge cases and scenarios you may not have thought of
    - Provide critical feedback on the completeness and clarity of your understanding of the feature
@@ -39,7 +40,6 @@ You will work with the user to create a comprehensive specification document for
    - No Gaps Identified: Display the full set of acceptance criteria as a bulleted list, then **EXPLICITLY** ask the user for approval to move on to `Spec Generation`. Do not proceed without confirmation.
 
 # Step 2 - Spec Generation:
-
 Produce a specification file that accurately represents all information gathered during Step 1 in `{project_root}/.agents/features/{feature-short-name}/spec.md`. **CRITICAL:** {feature-name} MUST match `spec.name` in the YAML frontmatter of the generated `spec.md` file. The specification file **MUST**:
    - Be written in clear, concise English
    - Provide sufficient detail for implementation teams to understand business intent
