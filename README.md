@@ -1,8 +1,8 @@
 # Vulpes and Branta Skills
 
-This marketplace ships two plugins for spec-driven feature development:
-`initialize` (set up the workspace) and `spec-driven-development` (the spec →
-plan → build → validate workflow).
+This marketplace ships three plugins: `initialize` (set up the workspace),
+`spec-driven-development` (the spec → plan → build → validate workflow), and
+`general-purpose-agents` (delegable subagents at three model tiers).
 
 ## Install
 
@@ -22,6 +22,7 @@ Then install the plugins:
 ```
 /plugin install initialize@skills
 /plugin install spec-driven-development@skills
+/plugin install general-purpose-agents@skills
 ```
 
 ## Plugins & skills
@@ -45,6 +46,18 @@ Skills are designed to be used in order. Once installed, each is invoked as
 | [`sdd-build-task`](./plugins/spec-driven-development/skills/sdd-build-task) | `/spec-driven-development:sdd-build-task` | Build a single task from a `backlog.json`. |
 | [`sdd-validate`](./plugins/spec-driven-development/skills/sdd-validate) | `/spec-driven-development:sdd-validate` | Verify the implementation matches the spec and acceptance criteria. |
 
+### `general-purpose-agents`
+
+Three general-purpose subagents that share the same prompt but run on different
+models. Delegate to the tier that matches the task's difficulty and your
+cost/latency budget.
+
+| Agent | Model | Use when |
+| --- | --- | --- |
+| `general-haiku` | Haiku | Simple, well-scoped, high-volume work: lookups, pattern searches, classification, routing, straightforward edits. Latency/cost matters most. |
+| `general-sonnet` | Sonnet | The sensible default: feature implementation, bug fixes, standard refactors, multi-file research, code review. |
+| `general-opus` | Opus | The hardest work: complex multi-step investigations, large-codebase analysis, architecture decisions, debugging unfamiliar systems. Quality matters most. |
+
 ## Repository layout
 
 ```
@@ -56,15 +69,22 @@ plugins/
 │   │   └── plugin.json
 │   └── skills/
 │       └── vnb-init/
-└── spec-driven-development/
+├── spec-driven-development/
+│   ├── .claude-plugin/
+│   │   └── plugin.json
+│   └── skills/                    # each ships its own LICENSE
+│       ├── sdd-spec/
+│       ├── sdd-plan/
+│       ├── sdd-build/
+│       ├── sdd-build-task/
+│       └── sdd-validate/
+└── general-purpose-agents/
     ├── .claude-plugin/
     │   └── plugin.json
-    └── skills/                    # each ships its own LICENSE
-        ├── sdd-spec/
-        ├── sdd-plan/
-        ├── sdd-build/
-        ├── sdd-build-task/
-        └── sdd-validate/
+    └── agents/                    # general-haiku, general-sonnet, general-opus
+        ├── general-haiku.md
+        ├── general-sonnet.md
+        └── general-opus.md
 tests/                            # exercise the skill scripts
 ```
 

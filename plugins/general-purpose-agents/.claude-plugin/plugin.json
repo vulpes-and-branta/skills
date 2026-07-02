@@ -1,0 +1,9 @@
+{
+  "name": "general-purpose-agents",
+  "version": "0.1.0",
+  "description": "General-purpose subagents at three model tiers (Haiku, Sonnet, Opus) for delegating research, search, and multi-step tasks at the right cost/capability trade-off",
+  "author": {
+    "name": "Vulpes & Branta",
+    "email": "hello@vulpesandbranta.com"
+  }
+}

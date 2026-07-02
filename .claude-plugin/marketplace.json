@@ -20,6 +20,12 @@
       "displayName": "Spec-Driven Development",
       "source": "./plugins/spec-driven-development",
       "description": "Spec-driven feature workflow: write specs, plan a backlog, build tasks, and validate against the spec"
+    },
+    {
+      "name": "general-purpose-agents",
+      "displayName": "General-Purpose Agents",
+      "source": "./plugins/general-purpose-agents",
+      "description": "General-purpose subagents at three model tiers (Haiku, Sonnet, Opus) for delegating research, search, and multi-step tasks at the right cost/capability trade-off"
     }
   ]
 }
