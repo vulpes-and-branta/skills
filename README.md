@@ -2,7 +2,7 @@
 
 This marketplace ships three plugins: `initialize` (set up the workspace),
 `spec-driven-development` (the spec → plan → build → validate workflow), and
-`general-purpose-agents` (delegable subagents at three model tiers).
+`agents` (delegable subagents at three model tiers).
 
 ## Install
 
@@ -22,7 +22,7 @@ Then install the plugins:
 ```
 /plugin install initialize@skills
 /plugin install spec-driven-development@skills
-/plugin install general-purpose-agents@skills
+/plugin install agents@skills
 ```
 
 ## Plugins & skills
@@ -46,7 +46,7 @@ Skills are designed to be used in order. Once installed, each is invoked as
 | [`sdd-build-task`](./plugins/spec-driven-development/skills/sdd-build-task) | `/spec-driven-development:sdd-build-task` | Build a single task from a `backlog.json`. |
 | [`sdd-validate`](./plugins/spec-driven-development/skills/sdd-validate) | `/spec-driven-development:sdd-validate` | Verify the implementation matches the spec and acceptance criteria. |
 
-### `general-purpose-agents`
+### `agents`
 
 Three general-purpose subagents that share the same prompt but run on different
 models. Delegate to the tier that matches the task's difficulty and your
@@ -78,7 +78,7 @@ plugins/
 │       ├── sdd-build/
 │       ├── sdd-build-task/
 │       └── sdd-validate/
-└── general-purpose-agents/
+└── agents/
     ├── .claude-plugin/
     │   └── plugin.json
     └── agents/                    # general-haiku, general-sonnet, general-opus
