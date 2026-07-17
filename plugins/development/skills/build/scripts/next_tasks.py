@@ -1,4 +1,4 @@
-"""Pick the next eligible tasks from a sdd-build backlog.json.
+"""Pick the next eligible tasks from a feature's backlog.json.
 
 Replaces the agent's full-file reads of backlog.json with a single small
 JSON output. Returns every task whose status is "todo" and whose

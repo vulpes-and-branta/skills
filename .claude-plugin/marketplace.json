@@ -1,25 +1,19 @@
 {
-  "name": "skills",
+  "name": "vulpesandbranta",
   "owner": {
     "name": "Vulpes & Branta",
     "email": "hello@vulpesandbranta.com"
   },
   "metadata": {
-    "description": "Vulpes & Branta agent skills for spec-driven feature development",
+    "description": "Vulpes & Branta agent skills for engineering and research",
     "version": "0.1.0"
   },
   "plugins": [
     {
-      "name": "initialize",
-      "displayName": "Initialize",
-      "source": "./plugins/initialize",
-      "description": "Initialize the .agents/features/ directory structure used by the spec-driven-development workflow"
-    },
-    {
-      "name": "spec-driven-development",
-      "displayName": "Spec-Driven Development",
-      "source": "./plugins/spec-driven-development",
-      "description": "Spec-driven feature workflow: write specs, plan a backlog, build tasks, and validate against the spec"
+      "name": "development",
+      "displayName": "Development",
+      "source": "./plugins/development",
+      "description": "Structured development workflow: write specs, plan a task backlog, build tasks, and validate against the spec"
     },
     {
       "name": "agents",

@@ -1,0 +1,9 @@
+{
+  "name": "development",
+  "version": "0.1.0",
+  "description": "Structured development workflow: write specs, plan a task backlog, build tasks, and validate against the spec",
+  "author": {
+    "name": "Vulpes & Branta",
+    "email": "hello@vulpesandbranta.com"
+  }
+}
