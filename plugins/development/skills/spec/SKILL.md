@@ -29,7 +29,7 @@ You will work with the user to create a comprehensive specification document for
    - Explain why additional information is relevant to ensure comprehensive coverage
    - Iterate until all aspects of the feature are understood
 
-4. After the user has answered all questions you have about the feature, dispatch an adversarial subagent to double-check your work. The subagent should:
+4. After the user has answered all questions you have about the feature, dispatch an adversarial subagent team to double-check your work. The team should:
 
    - Question your assumptions about the feature to identify gaps in your understanding
    - Challenge you to consider edge cases and scenarios you may not have thought of
