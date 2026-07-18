@@ -143,6 +143,104 @@ class PickNextTasksTests(unittest.TestCase):
         self.assertEqual(sorted(t["id"] for t in result), [1, 2])
 
 
+class FilterFileConflictsTests(unittest.TestCase):
+    def _filter(self, tasks):
+        eligible = next_tasks.pick_next_tasks({"tasks": tasks})
+        admitted = next_tasks.filter_file_conflicts(eligible, tasks)
+        return [t["id"] for t in admitted]
+
+    def test_admits_all_when_locations_disjoint(self):
+        tasks = [
+            {"id": 0, "name": "a", "status": "todo", "locations": ["a.py"]},
+            {"id": 1, "name": "b", "status": "todo", "locations": ["b.py"]},
+        ]
+        self.assertEqual(self._filter(tasks), [0, 1])
+
+    def test_lowest_id_wins_on_shared_location(self):
+        tasks = [
+            {"id": 3, "name": "c", "status": "todo", "locations": ["shared.py"]},
+            {"id": 1, "name": "a", "status": "todo", "locations": ["shared.py"]},
+            {"id": 2, "name": "b", "status": "todo", "locations": ["shared.py"]},
+        ]
+        self.assertEqual(self._filter(tasks), [1])
+
+    def test_greedy_admits_non_overlapping_tail(self):
+        # 1[a] blocks 2[a,b], but 3[b] is still free once 2 is skipped.
+        tasks = [
+            {"id": 1, "name": "a", "status": "todo", "locations": ["a.py"]},
+            {"id": 2, "name": "b", "status": "todo", "locations": ["a.py", "b.py"]},
+            {"id": 3, "name": "c", "status": "todo", "locations": ["b.py"]},
+        ]
+        self.assertEqual(self._filter(tasks), [1, 3])
+
+    def test_in_progress_task_reserves_its_locations(self):
+        tasks = [
+            {"id": 0, "name": "a", "status": "in progress", "locations": ["a.py"]},
+            {"id": 1, "name": "b", "status": "todo", "locations": ["a.py"]},
+            {"id": 2, "name": "c", "status": "todo", "locations": ["b.py"]},
+        ]
+        self.assertEqual(self._filter(tasks), [2])
+
+    def test_done_task_locations_are_not_reserved(self):
+        tasks = [
+            {"id": 0, "name": "a", "status": "done", "locations": ["a.py"]},
+            {"id": 1, "name": "b", "status": "todo", "locations": ["a.py"]},
+        ]
+        self.assertEqual(self._filter(tasks), [1])
+
+    def test_tasks_without_locations_never_conflict(self):
+        tasks = [
+            {"id": 0, "name": "a", "status": "todo"},
+            {"id": 1, "name": "b", "status": "todo", "locations": []},
+            {"id": 2, "name": "c", "status": "todo", "locations": ["a.py"]},
+        ]
+        self.assertEqual(self._filter(tasks), [0, 1, 2])
+
+    def test_references_do_not_conflict(self):
+        tasks = [
+            {"id": 0, "name": "a", "status": "todo", "locations": ["a.py"],
+             "references": ["shared.py"]},
+            {"id": 1, "name": "b", "status": "todo", "locations": ["shared.py"]},
+        ]
+        self.assertEqual(self._filter(tasks), [0, 1])
+
+    def test_equivalent_paths_conflict_after_normalization(self):
+        tasks = [
+            {"id": 0, "name": "a", "status": "todo", "locations": ["src/a.py"]},
+            {"id": 1, "name": "b", "status": "todo", "locations": ["./src//a.py"]},
+        ]
+        self.assertEqual(self._filter(tasks), [0])
+
+    def test_directory_conflicts_with_file_beneath_it(self):
+        tasks = [
+            {"id": 0, "name": "a", "status": "todo", "locations": ["src/api/"]},
+            {"id": 1, "name": "b", "status": "todo", "locations": ["src/api/routes.py"]},
+            {"id": 2, "name": "c", "status": "todo", "locations": ["src/apiary.py"]},
+        ]
+        self.assertEqual(self._filter(tasks), [0, 2])
+
+    def test_file_beneath_directory_conflicts_in_either_order(self):
+        tasks = [
+            {"id": 0, "name": "a", "status": "todo", "locations": ["src/api/routes.py"]},
+            {"id": 1, "name": "b", "status": "todo", "locations": ["src/api"]},
+        ]
+        self.assertEqual(self._filter(tasks), [0])
+
+    def test_ignores_non_string_and_blank_locations(self):
+        tasks = [
+            {"id": 0, "name": "a", "status": "todo", "locations": [None, "  ", "a.py"]},
+            {"id": 1, "name": "b", "status": "todo", "locations": ["a.py"]},
+        ]
+        self.assertEqual(self._filter(tasks), [0])
+
+    def test_handles_malformed_locations_field(self):
+        tasks = [
+            {"id": 0, "name": "a", "status": "todo", "locations": "not-a-list"},
+            {"id": 1, "name": "b", "status": "todo", "locations": ["a.py"]},
+        ]
+        self.assertEqual(self._filter(tasks), [0, 1])
+
+
 class AllDoneTests(unittest.TestCase):
     def test_all_done_when_every_task_done(self):
         backlog = {
@@ -206,6 +304,24 @@ class CliTests(unittest.TestCase):
         self.assertEqual(
             json.loads(proc.stdout),
             {"next_tasks": [{"id": 1, "name": "b"}, {"id": 2, "name": "c"}]},
+        )
+
+    def test_cli_withholds_conflicting_task(self):
+        proc = self._run({
+            "status": "in progress",
+            "tasks": [
+                {"id": 0, "name": "a", "status": "done", "dependencies": [],
+                 "locations": []},
+                {"id": 1, "name": "b", "status": "todo", "dependencies": [0],
+                 "locations": ["src/shared.py"]},
+                {"id": 2, "name": "c", "status": "todo", "dependencies": [0],
+                 "locations": ["src/shared.py"]},
+            ],
+        })
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertEqual(
+            json.loads(proc.stdout),
+            {"next_tasks": [{"id": 1, "name": "b"}]},
         )
 
     def test_cli_emits_all_done_when_complete(self):

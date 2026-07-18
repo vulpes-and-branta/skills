@@ -1,9 +1,10 @@
 """Pick the next eligible tasks from a feature's backlog.json.
 
 Replaces the agent's full-file reads of backlog.json with a single small
-JSON output. Returns every task whose status is "todo" and whose
-dependencies are all "done", so the caller can dispatch independent
-subagents in parallel. Read-only.
+JSON output. Returns every task whose status is "todo", whose dependencies
+are all "done", and whose `locations` do not collide with another returned
+task or with a task already "in progress" — so the caller can dispatch the
+result in parallel without subagents racing on the same files. Read-only.
 
 Usage (run from {project_root}):
     python scripts/next_tasks.py <feature-short-name>
@@ -28,6 +29,29 @@ from pathlib import Path
 
 TODO = "todo"
 DONE = "done"
+IN_PROGRESS = "in progress"
+
+
+def _normalize(location: str) -> str:
+    """Collapse a location string to a comparable posix-style relative path."""
+    parts = [p for p in location.strip().replace("\\", "/").split("/") if p not in ("", ".")]
+    return "/".join(parts)
+
+
+def _locations(task: dict) -> list[str]:
+    """Normalized, non-empty `locations` entries for a task."""
+    raw = task.get("locations") or []
+    if not isinstance(raw, list):
+        return []
+    return [n for loc in raw if isinstance(loc, str) and (n := _normalize(loc))]
+
+
+def _collides(location: str, reserved: set[str]) -> bool:
+    """True if `location` is, contains, or lives under any reserved path."""
+    return any(
+        location == r or location.startswith(r + "/") or r.startswith(location + "/")
+        for r in reserved
+    )
 
 
 def pick_next_tasks(backlog: dict) -> list[dict]:
@@ -49,6 +73,34 @@ def pick_next_tasks(backlog: dict) -> list[dict]:
         if all(dep in done_ids for dep in deps):
             eligible.append(task)
     return eligible
+
+
+def filter_file_conflicts(eligible: list[dict], tasks: list[dict]) -> list[dict]:
+    """Drop eligible tasks whose files are already spoken for.
+
+    Files held by "in progress" tasks are reserved up front. The remainder are
+    then admitted greedily in ascending id order, so on a collision the lowest
+    id wins and higher-id tasks stay `todo` until the next call.
+    """
+    reserved: set[str] = set()
+    for task in tasks:
+        if isinstance(task, dict) and task.get("status") == IN_PROGRESS:
+            reserved.update(_locations(task))
+
+    admitted = []
+    for task in sorted(eligible, key=lambda t: _sort_id(t)):
+        locations = _locations(task)
+        if any(_collides(loc, reserved) for loc in locations):
+            continue
+        reserved.update(locations)
+        admitted.append(task)
+    return admitted
+
+
+def _sort_id(task: dict) -> tuple[int, int]:
+    """Sort key placing well-formed integer ids first, ascending."""
+    task_id = task.get("id")
+    return (0, task_id) if isinstance(task_id, int) else (1, 0)
 
 
 def all_done(backlog: dict) -> bool:
@@ -83,7 +135,8 @@ def main() -> int:
         print(json.dumps({"status": "all_done"}))
     else:
         eligible = pick_next_tasks(backlog)
-        out = [{"id": t.get("id"), "name": t.get("name")} for t in eligible]
+        admitted = filter_file_conflicts(eligible, backlog["tasks"])
+        out = [{"id": t.get("id"), "name": t.get("name")} for t in admitted]
         print(json.dumps({"next_tasks": out}))
     return 0
 

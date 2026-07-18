@@ -27,8 +27,8 @@ If the feature's `spec.status` is `todo`, update the yaml frontmatter to set `st
 You orchestrate parallel subagents continuously — not in waves — until every task is done. All commands in this step are run from `{project_root}`.
 
 1. Run `python3 "${CLAUDE_SKILL_DIR}/scripts/next_tasks.py" {feature-short-name}` to get eligible tasks. The script outputs a single JSON line:
-    - `{"next_tasks": [{"id": <int>, "name": "<task-name>"}, ...]}`: one or more tasks ready. Go to step 2.
-    - `{"next_tasks": []}`: tasks remain but all are blocked by in-progress work. Wait for a completion (the harness will wake you), then go to step 3.
+    - `{"next_tasks": [{"id": <int>, "name": "<task-name>"}, ...]}`: one or more tasks ready. The script has already excluded tasks whose `locations` collide with each other or with in-progress work, so the returned set is safe to dispatch in full. Go to step 2.
+    - `{"next_tasks": []}`: tasks remain but all are blocked by dependencies on, or file conflicts with, in-progress work. Wait for a completion (the harness will wake you), then go to step 3.
     - `{"status": "all_done"}`: every task is `done`. Proceed to Phase 3 - Validation.
 2. For each eligible task you choose to admit:
     1. Mark it `in progress`:
@@ -57,7 +57,7 @@ You orchestrate parallel subagents continuously — not in waves — until every
         Track failure counts per task id in memory. If the same task has now failed 3 times, stop the build loop: reset it to `todo`, report the repeated failure (including each attempt's failure description) to the user, and exit. Do not flip failed tasks to `done`.
     3. Return to step 1 to dispatch any newly unblocked work. Do not wait for other in-flight subagents to drain first.
 
-**You set the in-flight count.** Default: admit every eligible task. Throttle only on concrete same-file write contention. `locations` is a hint — subagents touch files outside it. Throttle order: highest fan-out first, lowest id breaks ties.
+**Admit every task `next_tasks.py` returns.** File contention is already resolved by the script — do not throttle further, and do not re-derive conflicts yourself. `locations` is a hint and subagents may touch files outside it; if you observe a real conflict the script missed, report it rather than silently holding tasks back.
 
 ## Phase 3 - Validation
 1. Dispatch a subagent with the following prompt:
