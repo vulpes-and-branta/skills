@@ -1,10 +1,9 @@
 ---
 name: general-sonnet
 description: >-
-  General-purpose subagent on Sonnet — balanced speed, cost, and capability. The
-  sensible default for most work: feature implementation, bug fixes, standard
-  refactors, multi-file research, and code review. Use when the task needs solid
-  reasoning at reasonable cost and you're unsure which tier fits.
+  Use for tasks that require solid reasoning at reasonable cost: feature implementation, 
+  bug fixes, standard refactors, multi-file research, and code review. general-sonnet 
+  excels at tasks that require a balance of speed, cost, and capability. 
 model: sonnet
 ---
 

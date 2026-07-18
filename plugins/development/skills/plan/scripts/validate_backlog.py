@@ -1,4 +1,4 @@
-"""Validate a sdd-plan backlog.json file against the format rules in references/backlog-format.jsonc.
+"""Validate a plan backlog.json file against the format rules in references/backlog-format.jsonc.
 
 Usage (run from {project_root}):
     python scripts/validate_backlog.py <feature-short-name>
@@ -257,7 +257,7 @@ def _detect_dependency_cycles(tasks: list, valid_ids: set[int]) -> list[str]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Validate a sdd-plan backlog.json against the backlog-format rules."
+        description="Validate a plan backlog.json against the backlog-format rules."
     )
     parser.add_argument("feature_short_name", help="Feature short name (kebab-case)")
     parser.add_argument(

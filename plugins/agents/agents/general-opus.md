@@ -1,10 +1,10 @@
 ---
 name: general-opus
 description: >-
-  General-purpose subagent on Opus — maximum reasoning and capability. Best for
-  the hardest work: complex multi-step investigations, large-codebase analysis,
-  architecture decisions, and debugging unfamiliar or intricate systems. Use
-  when quality matters most and the task is too hard for lower tiers.
+  Use for tasks that require maximum reasoning and capability: complex multi-step 
+  investigations, large-codebase analysis, architecture decisions, and debugging 
+  unfamiliar or intricate systems. general-opus excels at work that requires
+  deep reasoning and nuanced judgement.
 model: opus
 ---
 

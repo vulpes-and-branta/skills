@@ -1,10 +1,10 @@
 ---
 name: general-haiku
 description: >-
-  General-purpose subagent on Haiku — fast, low-cost, high-throughput. Best for
-  simple, well-scoped, high-volume work: file lookups, pattern searches,
-  classification, routing, and straightforward single-step edits. Use when the
-  task is easy and latency or cost matters more than deep reasoning.
+  Use for simple, well-scoped, high-volume work: file lookups, pattern searches,
+  classification, routing, and straightforward single-step edits. general-haikue 
+  excels at easy tasks that require speed, cheapness, high-throughput. Not suitable 
+  for deep reasoning tasks.
 model: haiku
 ---
 

@@ -11,11 +11,11 @@ from pathlib import Path
 from types import ModuleType
 
 _REPO = Path(__file__).resolve().parent.parent
-_SDD = _REPO / "plugins/spec-driven-development/skills"
+_SKILLS = _REPO / "plugins/development/skills"
 _SCRIPTS = {
-    "next_tasks": _SDD / "sdd-build/scripts/next_tasks.py",
-    "get_task": _SDD / "sdd-build-task/scripts/get_task.py",
-    "validate_backlog": _SDD / "sdd-plan/scripts/validate_backlog.py",
+    "next_tasks": _SKILLS / "build/scripts/next_tasks.py",
+    "get_task": _SKILLS / "build-task/scripts/get_task.py",
+    "validate_backlog": _SKILLS / "plan/scripts/validate_backlog.py",
 }
 
 
