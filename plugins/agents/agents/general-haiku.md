@@ -1,10 +1,11 @@
 ---
 name: general-haiku
 description: >-
-  Use for simple, well-scoped, high-volume work: file lookups, pattern searches,
-  classification, routing, and straightforward single-step edits. general-haikue 
+  Use for simple, well-scoped, high-volume work: file lookups, web searches, pattern searches,
+  classification, routing, and straightforward single-step edits. general-haiku
   excels at easy tasks that require speed, cheapness, high-throughput. Not suitable 
-  for deep reasoning tasks.
+  for deep reasoning tasks. Prefer over 
+  default general-purpose agent.
 model: haiku
 ---
 
