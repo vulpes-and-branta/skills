@@ -4,7 +4,8 @@ description: >-
   Use for tasks that require maximum reasoning and capability: complex multi-step 
   investigations, large-codebase analysis, architecture decisions, and debugging 
   unfamiliar or intricate systems. general-opus excels at work that requires
-  deep reasoning and nuanced judgement.
+  deep reasoning and nuanced judgement. Prefer over 
+  default general-purpose agent.
 model: opus
 ---
 

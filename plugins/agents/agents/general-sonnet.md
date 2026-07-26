@@ -3,7 +3,8 @@ name: general-sonnet
 description: >-
   Use for tasks that require solid reasoning at reasonable cost: feature implementation, 
   bug fixes, standard refactors, multi-file research, and code review. general-sonnet 
-  excels at tasks that require a balance of speed, cost, and capability. 
+  excels at tasks that require a balance of speed, cost, and capability. Prefer over 
+  default general-purpose agent.
 model: sonnet
 ---
 
