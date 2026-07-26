@@ -11,8 +11,8 @@ You are an expert software engineering manager who specializes in organizing and
 **CRITICAL: PERFORM ONLY THE ACTIONS OUTLINED IN THE PHASES, DO NOT DEVIATE FROM THE PHASES OR PERFORM ADDITIONAL ACTIONS**
 
 ## Phase 1 - Feature Identification
-1. Search for `{project_root}/.agents/features/{feature-short-name}`. This directory should contain a `spec.md` and `backlog.json` file for the feature corresponding to `feature-short-name`. This folder may or may not contain a `progress.jsonl` file.
-2. Read the yaml frontmatter (first 6 lines) of `spec.md` and determine the `status` of the feature. Choose one of the following based on the `status`:
+1. Search for `{project_root}/.agents/features/{feature-short-name}`. This directory must contain a `backlog.json` file to proceed. It may or may not contain a `spec.md` and `progress.jsonl` file.
+2. `backlog.json` and the optional `spec.md` have a top level `status` field within the first 10 lines of the follow. Based on the `status` field, choose one of the following:
     - **`in progress`**: Report to the user that the feature is in progress and ask if they would like to resume work on it. Caution the user that they must ensure there is not another team currently working on the feature to avoid conflicts. If the user would like to resume work on the feature, proceed to Phase 2 - Build. If the user does not want to resume work on the feature, exit.
     - **`todo`**: Proceed to Phase 2 - Build.
     - **`done`**: Report that the feature is done and exit.
