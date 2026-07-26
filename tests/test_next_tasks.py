@@ -226,6 +226,27 @@ class FilterFileConflictsTests(unittest.TestCase):
         ]
         self.assertEqual(self._filter(tasks), [0])
 
+    def test_case_differing_paths_conflict(self):
+        tasks = [
+            {"id": 0, "name": "a", "status": "todo", "locations": ["SRC/A.py"]},
+            {"id": 1, "name": "b", "status": "todo", "locations": ["src/a.py"]},
+        ]
+        self.assertEqual(self._filter(tasks), [0])
+
+    def test_case_insensitive_directory_prefix(self):
+        tasks = [
+            {"id": 0, "name": "a", "status": "todo", "locations": ["src/API/"]},
+            {"id": 1, "name": "b", "status": "todo", "locations": ["src/api/routes.py"]},
+        ]
+        self.assertEqual(self._filter(tasks), [0])
+
+    def test_case_differing_in_progress_task_reserves_location(self):
+        tasks = [
+            {"id": 0, "name": "a", "status": "in progress", "locations": ["Src/A.py"]},
+            {"id": 1, "name": "b", "status": "todo", "locations": ["src/a.py"]},
+        ]
+        self.assertEqual(self._filter(tasks), [])
+
     def test_ignores_non_string_and_blank_locations(self):
         tasks = [
             {"id": 0, "name": "a", "status": "todo", "locations": [None, "  ", "a.py"]},
