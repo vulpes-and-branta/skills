@@ -33,9 +33,16 @@ IN_PROGRESS = "in progress"
 
 
 def _normalize(location: str) -> str:
-    """Collapse a location string to a comparable posix-style relative path."""
+    """Collapse a location string to a comparable posix-style relative path.
+
+    Case-folded because macOS and Windows filesystems are case-insensitive by
+    default, so `SRC/A.py` and `src/a.py` are the same file and must collide.
+    On case-sensitive filesystems this can serialize two genuinely distinct
+    files, which costs a little parallelism but never causes a write race.
+    Used only for comparison; emitted task ids and names keep their own casing.
+    """
     parts = [p for p in location.strip().replace("\\", "/").split("/") if p not in ("", ".")]
-    return "/".join(parts)
+    return "/".join(parts).casefold()
 
 
 def _locations(task: dict) -> list[str]:
