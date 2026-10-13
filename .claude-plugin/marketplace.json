@@ -4,10 +4,6 @@
     "name": "Vulpes & Branta",
     "email": "hello@vulpesandbranta.com"
   },
-  "metadata": {
-    "description": "Vulpes & Branta agent skills for engineering and research",
-    "version": "0.1.0"
-  },
   "plugins": [
     {
       "name": "development",
